@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 body {
-  background-color: #191A1A;
+  background-color: #E8E1DB;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,10 +15,10 @@ form{
 }
 
 input {
-  background-color: #202222;
-  border: #3D3F40 1px solid;
+  background-color: #C7937B;
+  border: #C7937B 1px solid;
   border-radius: 7px;
-  padding: 10px;
+  padding: 15px;
   width: 100%;
   font-size: 16px;
   font-family: 'Inter', monoscape;
