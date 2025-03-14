@@ -1,18 +1,185 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exemplo Completo</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Configuração do Tailwind com dark mode via classe e fontes personalizadas
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+              jetbrains: ['"JetBrains Mono"', "monospace"],
+            },
+          },
+        },
+      };
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Search</title>
-</head>
+      // Função para aplicar o tema salvo no localStorage (se houver)
+      const loadTheme = () => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (savedTheme === "light") {
+          document.documentElement.classList.remove("dark");
+        }
+      };
 
-<body>
-  <form action="https://duckduckgo.com/?t=ffab&" method="get">
-    <input type="text" name="q" placeholder="Search">
-  </form>
-</body>
+      loadTheme();
+    </script>
+    <!-- Importando as fontes do Google -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- React e ReactDOM via CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <!-- Babel para transformar JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body class="bg-[#E8E1DB] dark:bg-gray-900 min-h-screen flex flex-col relative">
+    <!-- Espaço para o Header (React) -->
+    <div id="header"></div>
 
+    <!-- Formulário centralizado -->
+    <div class="flex-grow flex items-center justify-center">
+      <form action="https://duckduckgo.com/?t=ffab&" method="get" class="w-full max-w-md px-4">
+        <input
+          type="text"
+          name="q"
+          placeholder="Search"
+          class="w-full p-4 text-base font-inter text-white bg-[#C7937B] dark:bg-gray-700 border border-[#C7937B] dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C7937B] dark:focus:ring-gray-500 placeholder-white"
+        />
+      </form>
+    </div>
+
+    <!-- Botão de alternância de tema -->
+    <button
+      id="theme-toggle"
+      class="absolute bottom-4 right-4 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-3 rounded-full shadow-lg focus:outline-none"
+      aria-label="Toggle theme"
+    >
+      <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Ícone definido via JavaScript -->
+      </svg>
+    </button>
+
+    <!-- Script para alternar o tema -->
+    <script>
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+
+      const updateIcon = () => {
+        if (document.documentElement.classList.contains("dark")) {
+          // Em dark mode: ícone de sol (para indicar que ao clicar mudará para o modo claro)
+          themeIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364l-1.414 1.414M7.05 16.95l-1.414 1.414m12.728 0l-1.414-1.414M7.05 7.05L5.636 5.636"/>
+            <circle cx="12" cy="12" r="5" fill="currentColor" opacity="0.5"/>
+          `;
+        } else {
+          // Em light mode: ícone de lua (para indicar que ao clicar mudará para o modo escuro)
+          themeIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+          `;
+        }
+      };
+
+      // Atualiza o ícone ao carregar
+      updateIcon();
+
+      themeToggleBtn.addEventListener("click", () => {
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        }
+        updateIcon();
+      });
+    </script>
+
+    <!-- Componente Header em React -->
+    <script type="text/babel">
+      // Dados dos ícones
+      const iconData = [
+        {
+          href: "https://gui23x.vercel.app/",
+          path: (
+            <>
+              <path d="M5 20V19C5 15.134 8.13401 12 12 12V12C15.866 12 19 15.134 19 19V20" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </>
+          ),
+          label: "Portfólio",
+        },
+        {
+          href: "https://mail.google.com/mail/u/0/?ogbl#inbox",
+          path: (
+            <>
+              <path d="M7 9L12 12.5L17 9" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M2 17V7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17Z" stroke="#000000" strokeWidth="1.5" />
+            </>
+          ),
+          label: "Email",
+        },
+        {
+          href: "https://br.linkedin.com/in/guilherme-gomes-da-silva",
+          path: (
+            <>
+              <path d="M21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8Z" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M7 17V13.5V10" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M11 17V13.75M11 10V13.75M11 13.75C11 10 17 10 17 13.75V17" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M7 7.01L7.01 6.99889" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </>
+          ),
+          label: "Linkedin",
+        },
+        {
+          href: "https://github.com/guilherme23x",
+          path: (
+            <>
+              <path d="M16 22.0268V19.1568C16.0375 18.68 15.9731 18.2006 15.811 17.7506C15.6489 17.3006 15.3929 16.8902 15.06 16.5468C18.2 16.1968 21.5 15.0068 21.5 9.54679C21.4997 8.15062 20.9627 6.80799 20 5.79679C20.4558 4.5753 20.4236 3.22514 19.91 2.02679C19.91 2.02679 18.73 1.67679 16 3.50679C13.708 2.88561 11.292 2.88561 8.99999 3.50679C6.26999 1.67679 5.08999 2.02679 5.08999 2.02679C4.57636 3.22514 4.54413 4.5753 4.99999 5.79679C4.03011 6.81549 3.49251 8.17026 3.49999 9.57679C3.49999 14.9968 6.79998 16.1868 9.93998 16.5768C9.61098 16.9168 9.35725 17.3222 9.19529 17.7667C9.03334 18.2112 8.96679 18.6849 8.99999 19.1568V22.0268" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M9 20.0267C6 20.9999 3.5 20.0267 2 17.0267" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </>
+          ),
+          label: "Github",
+        },
+      ];
+
+      // Componente Header com estilos adaptados ao tema
+      const Header = () => (
+        <nav className="max-md:top-5 max-md:h-20 max-md:flex-row max-md:w-[90%] border dark:border-gray-700 bg-[#FFFCF5] dark:bg-gray-800 py-3 px-3 flex flex-col w-20 items-center justify-around absolute z-10 left-5 top-[50%] gap-2 shadow-lg rounded-xl backdrop-blur-sm hover:shadow-xl transition-all duration-300">
+          {iconData.map(({ href, path, label }, index) => (
+            <div key={index} className="group relative px-3 cursor-pointer">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-600 transition-colors duration-300">
+                <a href={href} target="__blank" rel="noopener noreferrer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" color="#000000">
+                    {path}
+                  </svg>
+                </a>
+              </div>
+              <span className="absolute -top-12 left-[50%] -translate-x-[50%] z-20 origin-bottom scale-0 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-xs font-medium shadow-lg transition-all duration-300 ease-in-out group-hover:scale-100 before:absolute before:bottom-[-5px] before:left-[50%] before:-translate-x-[50%] before:border-[6px] before:border-transparent before:border-t-white dark:before:border-t-gray-700">
+                {label}
+              </span>
+            </nav>
+          ))}
+        </nav>
+      );
+
+      // Renderiza o Header
+      ReactDOM.createRoot(document.getElementById("header")).render(<Header />);
+    </script>
+  </body>
 </html>
